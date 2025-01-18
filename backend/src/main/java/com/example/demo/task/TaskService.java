@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 class TaskService {
     @Autowired
-    private com.example.demo.task.TaskRepository taskRepository;
+    private TaskRepository taskRepository;
 
     public List<Task> getAllTasks() { return taskRepository.findAll(); }
     public Optional<Task> getTaskById(Long id) { return taskRepository.findById(id); }

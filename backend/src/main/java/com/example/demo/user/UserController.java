@@ -1,6 +1,6 @@
 package com.example.demo.user;
 
-import com.example.demo.TableDataLayout;
+import com.example.demo.common.TableDataLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,35 +13,35 @@ class UserController {
     private UserService userService;
 
     @GetMapping
-    public TableDataLayout<User> getAllTasks() {
-        List<User> tasks = userService.getAllUsers();
-        return new TableDataLayout<>(tasks, "success");
+    public TableDataLayout<User> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return new TableDataLayout<>(users, "success");
     }
 
 
     @GetMapping("/{id}")
-    public User getTaskById(@PathVariable Long id) {
-        return userService.getUserById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @PostMapping
-    public User createTask(@RequestBody User task) {
-        return userService.saveUser(task);
+    public User createUser(@RequestBody User user) {
+        return userService.saveUser(user);
     }
 
     @PutMapping("/{id}")
-    public User updateTask(@PathVariable Long id, @RequestBody User taskDetails) {
-        User task = userService.getUserById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        task.setUsername(taskDetails.getUsername());
-        task.setName(taskDetails.getName());
-        task.setEmail(taskDetails.getEmail());
-        task.setMobile(taskDetails.getMobile());
-        task.setActive(taskDetails.getActive());
-        return userService.saveUser(task);
+    public User updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        User user = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setUsername(userDetails.getUsername());
+        user.setPassword(userDetails.getPassword());
+        user.setEmail(userDetails.getEmail());
+        user.setMobile(userDetails.getMobile());
+        user.setActive(userDetails.getActive());
+        return userService.saveUser(user);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 }

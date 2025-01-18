@@ -1,6 +1,6 @@
 package com.example.demo.task;
 
-import com.example.demo.TableDataLayout;
+import com.example.demo.common.TableDataLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

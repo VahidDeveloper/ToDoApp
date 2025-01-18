@@ -1,4 +1,4 @@
-package com.example.demo; // Adjust the package name as per your structure
+package com.example.demo.common; // Adjust the package name as per your structure
 
 import java.util.List;
 
