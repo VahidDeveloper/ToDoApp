@@ -1,6 +1,8 @@
-export type Task = {
+export interface IUser {
     id: number;
-    title: string;
-    description: string;
-    completed: boolean;
+    username: string;
+    password: string;
+    email: string;
+    mobile: number;
+    active: boolean;
   };

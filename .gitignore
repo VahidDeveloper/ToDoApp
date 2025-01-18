@@ -1,10 +1,9 @@
 ### IntelliJ IDEA ###
-.idea/*
+.idea
 *.iws
 *.iml
 *.ipr
 
-backend/HELP.md
 backend/target/
 backend/!.mvn/wrapper/maven-wrapper.jar
 backend/!**/src/main/**/target/

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { Task } from "@/types/users";
+import { Task } from "@/types/task";
 import { TableDataLayout } from "@/types/table";
 import { getItems } from "@/http/generic-service";
 

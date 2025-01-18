@@ -1,20 +1,20 @@
 import { Metadata } from "next";
-import TaskTable from "./TaskTable";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import UserTable from "./UserTable";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
-  title: "Tasks",
-  description: "Task table",
+  title: "Users",
+  description: "User table",
 };
 
 const TablesPage = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Tasks" />
+      <Breadcrumb pageName="Users" />
 
       <div className="flex flex-col gap-10">
-        <TaskTable />
+        <UserTable />
       </div>
     </DefaultLayout>
   );
