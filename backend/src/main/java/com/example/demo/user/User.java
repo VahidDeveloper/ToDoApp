@@ -24,25 +24,26 @@ class User {
     private LocalDateTime creationTime = LocalDateTime.now();
     public User() {}
 
-    public User(String username, String password ,String email,String mobile,  boolean active) {
+    public User(String username, String password ,String email,String mobile,  boolean active,LocalDateTime creationTime) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.mobile = mobile;
         this.active = active;
+        this.creationTime = creationTime;
     }
 
     public Long getId() { return id; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }
-    public void setPassword(String name) { this.password = name; }
+    public void setPassword(String name) { this.password = password; }
     public String getMobile() { return mobile; }
     public void setMobile(String mobile) { this.mobile = mobile; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public boolean getActive() { return active; }
-    public void setActive(boolean completed) { this.active = completed; }
+    public void setActive(boolean active) { this.active = active; }
     public LocalDateTime getCreationTime() {return creationTime;}
     public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;

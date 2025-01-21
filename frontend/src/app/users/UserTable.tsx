@@ -3,19 +3,20 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { IUser } from "@/types/users";
 import { useGetUsers } from "@/hooks/users";
+import DeleteUser from "@/app/users/delete";
 import { Alert, Button } from "@heroui/react";
 import AddUserModal from "@/app/users/add/add-user";
-import DeleteUser from "@/app/users/delete";
 
 const UserTable = () => {
   const { data, isError, isLoading, refetch } = useGetUsers();
   const [searchTerm, setSearchTerm] = useState("");
-  const [userData, setUserData] = useState<IUser[]>();
+  const [userData, setUserData] = useState<IUser>();
+  const [userList, setUserList] = useState<IUser[]>();
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = React.useState(false);
 
   useEffect(() => {
-    if (data) setUserData(data.result);
+    if (data) setUserList(data.result);
   }, [data]);
 
   const openModal = () => setIsOpen(true);
@@ -29,9 +30,9 @@ const UserTable = () => {
 
   const filteredList = useMemo(() => {
     const searchLower = searchTerm.toLowerCase();
-    return userData?.filter((user) =>
+    return userList?.filter((user) =>
       user.username.toLowerCase().includes(searchLower));
-  }, [userData, searchTerm]);
+  }, [userList, searchTerm]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -108,19 +109,26 @@ const UserTable = () => {
                   {user.active.toString()}
                 </p>
               </div>
-              <div className="px-2 py-4 flex items-center justify-center">
+              <div className="px-2 py-4 gap-1 flex items-center justify-center">
+                <Button onPress={() => {
+                  setUserData(user);
+                  openModal();
+                }} color="secondary" size="sm">
+                  Edit
+                </Button>
                 <DeleteUser user={user} complete={refetch} />
               </div>
+              {isOpen && <AddUserModal user={user} onClose={closeModal} />}
             </div>
+
           ))}
         </div>
       </div>
-      {isOpen && <AddUserModal onClose={closeModal} />}
       {isVisible && (
         <Alert
           color="success"
           title={"Success Notification"}
-          description={`User added successfully`}
+          description={`User ${userData ? `${userData.username} edited` : "added"} successfully`}
           isVisible={isVisible}
           variant="faded"
           onClose={() => setIsVisible(false)}

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { TableDataLayout } from "@/types/table";
 import { ICreateUser, IUser } from "@/types/users";
-import { deleteItem, getItems, postItem } from "@/http/generic-service";
+import { deleteItem, getItems, postItem, putItem } from "@/http/generic-service";
 
 const getUsers = async () => {
   const { data } = await getItems("users");
@@ -11,21 +11,16 @@ const getUsers = async () => {
 
 const postUser = (data: ICreateUser) => postItem("users", data);
 
+const putUser = (data: IUser) => putItem(`users/${data.id}`, data);
+
 const deleteUser = (id: number) => deleteItem(`users/${id}`);
 
 export const useGetUsers = () =>
   useQuery({ queryKey: ["getUsers"], queryFn: getUsers });
 
 
-export const useAddUser = () => useMutation({
-  mutationFn: (newTodo: ICreateUser) => {
-    return postUser(newTodo);
-  }
-});
+export const useAddUser = () => useMutation({ mutationFn: postUser });
 
+export const useUpdateUser = () => useMutation({ mutationFn: putUser });
 
-export const useDeleteUser = () => useMutation({
-  mutationFn: (userId: number) => {
-    return deleteUser(userId);
-  }
-});
+export const useDeleteUser = () => useMutation({ mutationFn: deleteUser });

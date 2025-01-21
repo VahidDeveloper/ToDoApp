@@ -1,23 +1,41 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import {
   Input,
   Button,
   Switch,
-  Modal, ModalFooter, ModalHeader, ModalBody, ModalContent, Alert
+  Modal,
+  ModalFooter,
+  ModalHeader,
+  ModalBody,
+  ModalContent
 } from "@heroui/react";
 import { Form } from "@heroui/form";
-import { useAddUser } from "@/hooks/users";
-import { ICreateUser } from "@/types/users";
+import { useAddUser, useUpdateUser } from "@/hooks/users";
+import { IUser } from "@/types/users";
 
 interface AddUserModalProps {
   onClose: (value: boolean) => void;
+  user?: IUser | null; // Optional user for edit mode
 }
 
+function AddUserModal({ onClose, user }: AddUserModalProps) {
+  const nameRef = useRef<HTMLInputElement>(null);
 
-function AddUserModal({ onClose }: AddUserModalProps) {
-
-const  nameRef = useRef<HTMLInputElement>(null)
   const { mutate: apiAddUser } = useAddUser();
+  const { mutate: apiUpdateUser } = useUpdateUser(); // Hook for updating user
+
+  useEffect(() => {
+    // Prepopulate form fields in edit mode
+    if (user) {
+      const form = nameRef.current?.form;
+      if (form) {
+        form.username.value = user.username;
+        form.email.value = user.email;
+        form.mobile.value = user.mobile || "";
+        form.active.checked = user.active;
+      }
+    }
+  }, [user]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,14 +43,27 @@ const  nameRef = useRef<HTMLInputElement>(null)
 
     const data = {
       ...Object.fromEntries(formData),
-      active: e.currentTarget.querySelector<HTMLInputElement>("input[name=active]")?.checked || false
-    } as ICreateUser;
-    apiAddUser(data, {
-      onSuccess: () => {
-        onClose(true)
-      }
-    });
+      active:
+        e.currentTarget.querySelector<HTMLInputElement>("input[name=active]")
+          ?.checked || false
+    } as IUser;
+    if (user) {
+      // Update user
+      apiUpdateUser({ ...data, id: user.id }, {
+        onSuccess: () => {
+          onClose(true);
+        }
+      });
+    } else {
+      // Add new user
+      apiAddUser(data, {
+        onSuccess: () => {
+          onClose(true);
+        }
+      });
+    }
   };
+
 
   return (
     <>
@@ -44,9 +75,7 @@ const  nameRef = useRef<HTMLInputElement>(null)
             onReset={() => onClose(false)}
             onSubmit={handleSubmit}
           >
-            <ModalHeader>
-              Add New User
-            </ModalHeader>
+            <ModalHeader>{user ? "Edit User" : "Add New User"}</ModalHeader>
             <ModalBody>
               <Input
                 ref={nameRef}
@@ -72,23 +101,26 @@ const  nameRef = useRef<HTMLInputElement>(null)
                 name="mobile"
                 type="text"
               />
-              <Input
-                errorMessage="Please enter a valid password"
-                label="Password"
-                labelPlacement="outside"
-                name="password"
-                type="password"
-              />
+              {!user && (
+                <Input
+                  errorMessage="Please enter a valid password"
+                  label="Password"
+                  labelPlacement="outside"
+                  name="password"
+                  type="password"
+                />
+              )}
               <Switch
                 name="active"
-                defaultSelected color="primary">
+                defaultSelected={user?.active || false}
+                color="primary"
+              >
                 Active
               </Switch>
-
             </ModalBody>
             <ModalFooter className="self-end">
               <Button color="primary" type="submit">
-                Submit
+                {user ? "Update" : "Submit"}
               </Button>
               <Button type="reset" variant="flat" onPress={() => onClose(false)}>
                 Close
@@ -97,9 +129,8 @@ const  nameRef = useRef<HTMLInputElement>(null)
           </Form>
         </ModalContent>
       </Modal>
-
     </>
   );
-};
+}
 
 export default AddUserModal;
