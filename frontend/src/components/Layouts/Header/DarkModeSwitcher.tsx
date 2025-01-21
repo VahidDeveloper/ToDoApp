@@ -18,13 +18,12 @@ const DarkModeSwitcher = () => {
           className={`absolute left-0.5 top-1/2 z-1 h-9.5 w-9.5 -translate-y-1/2 rounded-full bg-white transition-transform duration-300 ease-in-out dark:bg-dark-3 ${colorMode === "dark" ? "translate-x-[51px]" : "translate-x-[3px]"}`}
         />
 
-        <span className="relative z-10 flex h-9.5 w-full max-w-9.5 items-center justify-center">
-      <span className="material-symbols-outlined">{'light_mode'}</span>
-        </span>
-        <span className="relative z-10 flex h-9.5 w-full max-w-9.5 items-center justify-center">
-      <span className="material-symbols-outlined">{'dark_mode'}</span>
-
-        </span>
+        <p className="relative z-10 flex h-9.5 w-full max-w-9.5 items-center justify-center">
+          <span className="material-symbols-outlined">{"light_mode"}</span>
+        </p>
+        <p className="relative z-10 flex h-9.5 w-full max-w-9.5 items-center justify-center">
+          <span className="material-symbols-outlined">{"dark_mode"}</span>
+        </p>
       </div>
     </li>
   );

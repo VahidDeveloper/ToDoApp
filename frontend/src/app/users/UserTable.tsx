@@ -22,6 +22,7 @@ const UserTable = () => {
   const openModal = () => setIsOpen(true);
   const closeModal = (value: boolean) => {
     setIsVisible(value);
+    setUserData(undefined);
     setIsOpen(false);
     if (value) {
       refetch().then();
@@ -105,8 +106,8 @@ const UserTable = () => {
                 <p className="font-medium text-dark dark:text-white">{user.mobile}</p>
               </div>
               <div className="px-2 py-4 flex items-center justify-center">
-                <p className="font-medium text-dark dark:text-white">
-                  {user.active.toString()}
+                <p className="relative z-10 flex h-9.5 w-full max-w-9.5 items-center justify-center">
+                  <span className={`${user.active ? 'text-green' : 'text-danger'} material-symbols-outlined`}>{user.active ? "task_alt": "cancel"}</span>
                 </p>
               </div>
               <div className="px-2 py-4 gap-1 flex items-center justify-center">
@@ -118,7 +119,7 @@ const UserTable = () => {
                 </Button>
                 <DeleteUser user={user} complete={refetch} />
               </div>
-              {isOpen && <AddUserModal user={user} onClose={closeModal} />}
+              {isOpen && <AddUserModal user={userData} onClose={closeModal} />}
             </div>
 
           ))}
