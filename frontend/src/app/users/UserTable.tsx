@@ -5,6 +5,7 @@ import { IUser } from "@/types/users";
 import { useGetUsers } from "@/hooks/users";
 import { Alert, Button } from "@heroui/react";
 import AddUserModal from "@/app/users/add/add-user";
+import DeleteUser from "@/app/users/delete";
 
 const UserTable = () => {
   const { data, isError, isLoading, refetch } = useGetUsers();
@@ -21,8 +22,8 @@ const UserTable = () => {
   const closeModal = (value: boolean) => {
     setIsVisible(value);
     setIsOpen(false);
-    if (value){
-      refetch().then()
+    if (value) {
+      refetch().then();
     }
   };
 
@@ -59,7 +60,7 @@ const UserTable = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-4 sm:grid-cols-4">
+          <div className="grid grid-cols-5 sm:grid-cols-5">
             <div className="px-2 pb-3.5  text-center">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
                 UserName
@@ -80,11 +81,14 @@ const UserTable = () => {
                 IsActive
               </h5>
             </div>
+            <div className="px-2 pb-3.5 text-center">
+              <h5 className="text-sm font-medium uppercase xsm:text-base">Actions</h5>
+            </div>
           </div>
 
           {filteredList?.map((user, index) => (
             <div
-              className={`grid grid-cols-4 sm:grid-cols-4 ${index === filteredList?.length - 1
+              className={`grid grid-cols-5 sm:grid-cols-5 ${index === filteredList?.length - 1
                 ? ""
                 : "border-b border-stroke dark:border-dark-3"
               }`}
@@ -103,6 +107,9 @@ const UserTable = () => {
                 <p className="font-medium text-dark dark:text-white">
                   {user.active.toString()}
                 </p>
+              </div>
+              <div className="px-2 py-4 flex items-center justify-center">
+                <DeleteUser user={user} complete={refetch} />
               </div>
             </div>
           ))}
