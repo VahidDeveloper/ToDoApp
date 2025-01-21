@@ -1,17 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { IUser } from "@/types/users";
 import { TableDataLayout } from "@/types/table";
-import { getItems } from "@/http/generic-service";
+import { ICreateUser, IUser } from "@/types/users";
+import { getItems, postItem } from "@/http/generic-service";
 
 const getUsers = async () => {
-  const {data} = await getItems('users');
+  const { data } = await getItems("users");
   return data as TableDataLayout<IUser>;
 };
 
+const postUser = (data: ICreateUser) => postItem("users", data);
 
 export const useGetUsers = () =>
-  useQuery({ queryKey: ['getUsers'], queryFn: getUsers});
+  useQuery({ queryKey: ["getUsers"], queryFn: getUsers });
 
 
-
+export const useAddUser = () => useMutation({
+  mutationFn: (newTodo: ICreateUser) => {
+    return postUser(newTodo)
+  },
+});

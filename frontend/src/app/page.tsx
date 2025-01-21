@@ -6,16 +6,15 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata: Metadata = {
   title: "Demo",
-  description: "Demo dashboard",
+  description: "Demo dashboard"
 };
 
 function Home() {
   return (
-    <>
-        <DefaultLayout>
-          <ECommerce />
-        </DefaultLayout>
-    </>
+    <DefaultLayout>
+      <ECommerce />
+    </DefaultLayout>
   );
 }
+
 export default Home;

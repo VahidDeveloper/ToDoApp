@@ -1,10 +1,13 @@
 package com.example.demo.user;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "users")
@@ -17,7 +20,8 @@ class User {
     private String email;
     private String mobile;
     private boolean active;
-
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creationTime = LocalDateTime.now();
     public User() {}
 
     public User(String username, String password ,String email,String mobile,  boolean active) {
@@ -39,4 +43,8 @@ class User {
     public void setEmail(String email) { this.email = email; }
     public boolean getActive() { return active; }
     public void setActive(boolean completed) { this.active = completed; }
+    public LocalDateTime getCreationTime() {return creationTime;}
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
 }
