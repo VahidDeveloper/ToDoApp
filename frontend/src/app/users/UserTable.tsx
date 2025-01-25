@@ -5,7 +5,8 @@ import { IUser } from "@/types/users";
 import { useGetUsers } from "@/hooks/users";
 import DeleteUser from "@/app/users/delete";
 import { Alert, Button } from "@heroui/react";
-import AddUserModal from "@/app/users/add/add-user";
+import AddUserModal from "@/app/users/add-user";
+import UserActivity from "@/app/users/activity";
 
 const UserTable = () => {
   const { data, isError, isLoading, refetch } = useGetUsers();
@@ -13,7 +14,7 @@ const UserTable = () => {
   const [userData, setUserData] = useState<IUser>();
   const [userList, setUserList] = useState<IUser[]>();
   const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [showToast, setShowToast] = React.useState({value: false, title: '', description: '', color: ''});
 
   useEffect(() => {
     if (data) setUserList(data.result);
@@ -21,7 +22,7 @@ const UserTable = () => {
 
   const openModal = () => setIsOpen(true);
   const closeModal = (value: boolean) => {
-    setIsVisible(value);
+    setShowToast({value: true,color:'success', title: 'Success Notification', description:  `User ${userData ? `${userData.username} edited` : "added"} successfully`})
     setUserData(undefined);
     setIsOpen(false);
     if (value) {
@@ -34,6 +35,16 @@ const UserTable = () => {
     return userList?.filter((user) =>
       user.username.toLowerCase().includes(searchLower));
   }, [userList, searchTerm]);
+
+  function onChangeActivity(){
+    setShowToast({value: true,color:'success', title: 'Success Notification', description:  `User activity changed successfully`})
+    refetch();
+  }
+
+  function afterDelete(){
+    setShowToast({value: true,color:'danger', title: 'Success Notification', description:  `User deleted successfully`})
+    refetch();
+  }
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -107,32 +118,33 @@ const UserTable = () => {
               </div>
               <div className="px-2 py-4 flex items-center justify-center">
                 <p className="relative z-10 flex h-9.5 w-full max-w-9.5 items-center justify-center">
-                  <span className={`${user.active ? 'text-green' : 'text-danger'} material-symbols-outlined`}>{user.active ? "task_alt": "cancel"}</span>
+                  <span
+                    className={`${user.active ? "text-green" : "text-danger"} material-symbols-outlined`}>{user.active ? "task_alt" : "cancel"}</span>
                 </p>
               </div>
               <div className="px-2 py-4 gap-1 flex items-center justify-center">
-                <Button onPress={() => {
+                <UserActivity user={user} complete={onChangeActivity} />
+                <Button color="secondary" size="sm" onPress={() => {
                   setUserData(user);
                   openModal();
-                }} color="secondary" size="sm">
+                }}>
                   Edit
                 </Button>
-                <DeleteUser user={user} complete={refetch} />
+                <DeleteUser user={user} complete={afterDelete} />
               </div>
-              {isOpen && <AddUserModal user={userData} onClose={closeModal} />}
             </div>
-
           ))}
         </div>
       </div>
-      {isVisible && (
+      {isOpen && <AddUserModal user={userData} onClose={closeModal} />}
+      {showToast && (
         <Alert
-          color="success"
-          title={"Success Notification"}
-          description={`User ${userData ? `${userData.username} edited` : "added"} successfully`}
-          isVisible={isVisible}
+          color={showToast.color}
+          title={showToast.title}
+          description={showToast.description}
+          isVisible={showToast.value}
           variant="faded"
-          onClose={() => setIsVisible(false)}
+          onClose={() => setShowToast({value:false, title: '',color: '',description: ''})}
         />
       )}
     </>

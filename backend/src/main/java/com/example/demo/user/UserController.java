@@ -47,4 +47,14 @@ class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
+
+    @PatchMapping("/{id}/activity")
+    public User toggleUserActivity(@PathVariable Long id) {
+        User user = userService.getUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setActive(!user.getActive());
+
+        return userService.saveUser(user);
+    }
+
 }

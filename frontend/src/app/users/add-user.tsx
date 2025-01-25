@@ -101,15 +101,13 @@ function AddUserModal({ onClose, user }: AddUserModalProps) {
                 name="mobile"
                 type="text"
               />
-              {!user && (
-                <Input
-                  errorMessage="Please enter a valid password"
-                  label="Password"
-                  labelPlacement="outside"
-                  name="password"
-                  type="password"
-                />
-              )}
+              <Input
+                errorMessage="Please enter a valid password"
+                label="Password"
+                labelPlacement="outside"
+                name="password"
+                type="password"
+              />
               <Switch
                 name="active"
                 defaultSelected={user?.active || false}

@@ -70,9 +70,14 @@ const deleteItem = <T, R>(url: string, data: T = {} as T, urlPrefix = URL_PREFIX
 const putItem = <T, R>(
   url: string,
   data: T,
-  config?: {
-  }
+  config?: {}
 ) => service({...apiConfig('put', url, URL_PREFIX, data, config)}) as AxiosPromise<R>;
+
+const patchItem = <T, R>(
+  url: string,
+  data?: T,
+  config?: {}
+) => service({...apiConfig('patch', url, URL_PREFIX, data, config)}) as AxiosPromise<R>;
 
 const paginationUrl = (url:string, pagination:any, sort:any) =>
   url +
@@ -93,5 +98,5 @@ const generateSearchParam = (search = '', querySearch = '') => {
   return ``;
 };
 
-export {getItem, getItems, postItem, putItem, deleteItem};
+export {getItem, getItems, postItem, putItem, patchItem, deleteItem};
 export default service;

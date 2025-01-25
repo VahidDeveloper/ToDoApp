@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Modal,
   ModalContent,
@@ -6,31 +5,29 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
-   Alert
+  useDisclosure
 } from "@heroui/react";
-import { useDeleteUser } from "@/hooks/users";
-import { IUser } from "@/types/users";
+import { useRef } from "react";
 
-interface DeleteUserProps{
-  user:IUser;
-  complete: ()=> void
+import { IUser } from "@/types/users";
+import { useDeleteUser } from "@/hooks/users";
+
+interface DeleteUserProps {
+  user: IUser;
+  complete: () => void;
 }
 
-export default function DeleteUser({user, complete}:DeleteUserProps) {
-  const {isOpen,  onOpenChange} = useDisclosure();
-  const [deleteSuccess, setDeleteSuccess] = React.useState(false);
+export default function DeleteUser({ user, complete }: DeleteUserProps) {
+  const { isOpen, onOpenChange } = useDisclosure();
 
-  const targetRef = React.useRef(null);
+  const targetRef = useRef(null);
   const { mutate: apiDeleteUser } = useDeleteUser();
 
 
   const handleDelete = () => {
     apiDeleteUser(user.id, {
       onSuccess: () => {
-        setDeleteSuccess(true);
         complete();
-
       }, onError: (error) => {
         console.error("Failed to delete user:", error);
       }
@@ -70,16 +67,6 @@ export default function DeleteUser({user, complete}:DeleteUserProps) {
           )}
         </ModalContent>
       </Modal>
-      {deleteSuccess && (
-        <Alert
-          color="danger"
-          title={"Success Notification"}
-          description={`User deleted successfully`}
-          isVisible={deleteSuccess}
-          variant="faded"
-          onClose={() => setDeleteSuccess(false)}
-        />
-      )}
     </>
   );
 }
