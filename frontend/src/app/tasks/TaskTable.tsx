@@ -1,6 +1,6 @@
 "use client";
+import { Task } from "@/types/task";
 import { useGetTasks } from "@/hooks/tasks";
-import { Task } from "@/types/users";
 import { useEffect, useMemo, useState } from "react";
 
 const TaskTable = () => {

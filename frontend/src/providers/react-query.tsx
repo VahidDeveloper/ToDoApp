@@ -1,8 +1,8 @@
 "use client";
-import { ReactNode } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {ReactNode} from 'react';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
-export default function Providers({ children }: { children: ReactNode }) {
+export default function Providers({children}: { children: ReactNode }) {
 
 
     const queryClient = new QueryClient({
@@ -13,14 +13,15 @@ export default function Providers({ children }: { children: ReactNode }) {
             },
             mutations: {
                 retry: false,
-                onError: (error:any) => {
-                    console.log(error?.response?.data.result)
-                },
+                onError: (error: unknown) => {
+                    if (error && typeof error === 'object' && 'response' in error) {
+                        const err = error as { response?: { data?: { result?: string } } };
+                        console.log(err?.response?.data?.result);
+                    }
+                }
             },
         },
     });
-
-
 
 
     return (

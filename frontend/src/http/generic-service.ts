@@ -7,6 +7,7 @@ import {
 } from './interceptor';
 import {apiConfig} from './config';
 import {apiConstants} from './const';
+import {PaginationParams, SortParams, UrlParams} from "@/types/pagination";
 
 /*
  * Create & Config Axios Instance Using Interceptors
@@ -28,7 +29,7 @@ const getItem = <R>(
   }
 ) => service(apiConfig('get', url, urlPrefix, undefined, config)) as AxiosPromise<R>;
 
-const getItems = <R>(url: string, args?: any) => {
+const getItems = <R>(url: string, args?: UrlParams) => {
   if (args) {
     const {pagination, sort, search, trashed, querySearch} = args;
     return getItem<R>(
@@ -45,7 +46,7 @@ const getItems = <R>(url: string, args?: any) => {
 const postItem = <T, R>(
   url: string,
   data: T = {} as T,
-  args?: any,
+  args?: UrlParams,
   urlPrefix = URL_PREFIX,
   config?: {
     responseType?: ResponseType;
@@ -70,16 +71,16 @@ const deleteItem = <T, R>(url: string, data: T = {} as T, urlPrefix = URL_PREFIX
 const putItem = <T, R>(
   url: string,
   data: T,
-  config?: {}
+  config?: object
 ) => service({...apiConfig('put', url, URL_PREFIX, data, config)}) as AxiosPromise<R>;
 
 const patchItem = <T, R>(
   url: string,
   data?: T,
-  config?: {}
+  config?: object
 ) => service({...apiConfig('patch', url, URL_PREFIX, data, config)}) as AxiosPromise<R>;
 
-const paginationUrl = (url:string, pagination:any, sort:any) =>
+const paginationUrl = (url:string, pagination:PaginationParams, sort:SortParams) =>
   url +
   '?' +
   `${pagination ? `page=${pagination.page}&size=${pagination.size}` : ''}` +

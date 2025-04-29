@@ -1,9 +1,9 @@
-import {AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
+import {AxiosError,  AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 import * as handlers from './handler';
 import { NextResponse } from 'next/server';
 
-const onRequestFulfilled = async (config: InternalAxiosRequestConfig<any>) => {
-  return handlers.onRequestFulfilled(config) as InternalAxiosRequestConfig<any>;
+const onRequestFulfilled = async (config: InternalAxiosRequestConfig) => {
+  return handlers.onRequestFulfilled(config) as InternalAxiosRequestConfig;
 };
 const onRequestRejected = (error: AxiosError) => Promise.reject(error);
 

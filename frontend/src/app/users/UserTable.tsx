@@ -139,7 +139,7 @@ const UserTable = () => {
       {isOpen && <AddUserModal user={userData} onClose={closeModal} />}
       {showToast && (
         <Alert
-          color={showToast.color}
+          color={showToast.color as never}
           title={showToast.title}
           description={showToast.description}
           isVisible={showToast.value}

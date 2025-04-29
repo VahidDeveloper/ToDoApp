@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint --fix && npm run lint:scss",
+    "lint:ts": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "lint:scss": "stylelint \"src/**/*.scss\" --fix",
+    "prepare": "is-ci || husky"
   },
   "dependencies": {
     "@heroui/react": "^2.6.14",

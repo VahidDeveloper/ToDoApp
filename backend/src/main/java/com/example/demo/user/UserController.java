@@ -3,6 +3,7 @@ package com.example.demo.user;
 import com.example.demo.common.TableDataLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -14,10 +15,7 @@ class UserController {
 
     @GetMapping
     public TableDataLayout<User> getAllUsers() {
-        List<User> users = userService.getAllUsers()
-                .stream()
-                .sorted(Comparator.comparing(User::getCreationTime, Comparator.nullsLast(Comparator.naturalOrder())).reversed())
-                .toList();
+        List<User> users = userService.getAllUsers().stream().sorted(Comparator.comparing(User::getCreationTime, Comparator.nullsLast(Comparator.naturalOrder())).reversed()).toList();
         return new TableDataLayout<>(users, "success");
     }
 

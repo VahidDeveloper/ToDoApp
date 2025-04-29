@@ -1,4 +1,3 @@
 export interface IHttpError {
-    result :string;
-    status: string;
+    response :{data:{result:string}};
 }
